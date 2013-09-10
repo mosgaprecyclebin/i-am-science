@@ -15,3 +15,10 @@ Longer term:
 - Users can publish small results on data
 - Reputation
 - Impact
+
+License
+-------
+
+I am Science is open source software under the terms of the GNU General Public
+License. See LICENSE.txt and http://www.gnu.org/licenses/gpl.html for the
+details.
