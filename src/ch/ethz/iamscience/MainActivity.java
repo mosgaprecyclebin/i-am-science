@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,8 +36,14 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("ch.ethz.nervous");
-                startActivity(LaunchIntent);
+				if (isAppInstalled("ch.ethz.nervous")) {
+				    Intent launch = getPackageManager().getLaunchIntentForPackage("ch.ethz.nervous");
+	                startActivity(launch);
+				} else {
+					Intent install = new Intent(Intent.ACTION_VIEW)
+				        .setData(Uri.parse("market://details?id=ch.ethz.nervous"));
+				    startActivity(install);
+				}
 			}
         	
         });
@@ -86,5 +94,16 @@ public class MainActivity extends Activity {
 		Log.i("i-am-science", "Score: " + score);
 		return score;
 	}
+
+	private boolean isAppInstalled(String id) {
+        PackageManager pm = getPackageManager();
+        boolean installed = false;
+        try {
+            pm.getPackageInfo(id, PackageManager.GET_ACTIVITIES);
+            installed = true;
+        } catch (PackageManager.NameNotFoundException ex) {
+        }
+        return installed;
+    }
 
 }
