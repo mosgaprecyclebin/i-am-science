@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	private static final String[] levels = {"Student", "Master", "Doctor",
+		"Professor", "Nobel Laureate"};
+	private static final Integer[] levelScores = {10, 50, 250, 1000};
+
     private ArrayAdapter<String> apps;
 
 	@Override
@@ -40,8 +44,27 @@ public class MainActivity extends Activity {
 	}
 
 	private void refreshGui() {
+		int score = getScore();
 	    TextView scoreText = (TextView) findViewById(R.id.score);
-	    scoreText.setText(getScore() + "");
+	    scoreText.setText(score + "");
+	    String level = levels[0];
+	    int i = 0;
+	    while (i+1 < levels.length && score > levelScores[i]) {
+	    	i++;
+	    	level = levels[i];
+	    }
+	    TextView levelText = (TextView) findViewById(R.id.level);
+	    levelText.setText(level);
+	    String nextLevel = null;
+	    int r = 0;
+	    if (i+1 <= levels.length) {
+	    	nextLevel = levels[i+1];
+	    	r = levelScores[i] - score;
+	    }
+	    if (nextLevel != null) {
+		    TextView nextLevelText = (TextView) findViewById(R.id.nextlevel);
+		    nextLevelText.setText("(" + r + " more points to get to level '" + nextLevel + "')");
+	    }
 	}
 
 	@Override
