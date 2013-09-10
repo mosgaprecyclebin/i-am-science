@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 public class IncreaseScoreActivity extends Activity {
+
+    private Handler waitHandler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,11 @@ public class IncreaseScoreActivity extends Activity {
     	Log.i("i-am-science", "Score + 1 = " + (score + 1));
 		prefsEditor.putInt("score", score + 1);
 		prefsEditor.commit();
-		finish();
+		waitHandler.postDelayed(new Runnable() {
+            public void run() {
+        		finish();
+            }
+        }, 2000);
     }
 
 }
