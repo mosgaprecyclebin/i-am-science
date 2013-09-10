@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 	private static final String[] levels = {"Student", "Master", "Doctor",
 		"Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
+	private static final String[] appIds = {"nervous", "showmeyourworld"};
 
     private ArrayAdapter<String> apps;
 
@@ -31,17 +32,20 @@ public class MainActivity extends Activity {
 		apps = new ArrayAdapter<String>(this, R.layout.app_element);
         ListView appListView = (ListView) findViewById(R.id.apps);
         appListView.setAdapter(apps);
-        apps.add("nervous");
+        for (String id : appIds) {
+            apps.add(id);
+        }
         appListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				if (isAppInstalled("ch.ethz.nervous")) {
-				    Intent launch = getPackageManager().getLaunchIntentForPackage("ch.ethz.nervous");
+			public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
+				String id = ((TextView) v).getText().toString();
+				if (isAppInstalled("ch.ethz." + id)) {
+				    Intent launch = getPackageManager().getLaunchIntentForPackage("ch.ethz." + id);
 	                startActivity(launch);
 				} else {
 					Intent install = new Intent(Intent.ACTION_VIEW)
-				        .setData(Uri.parse("market://details?id=ch.ethz.nervous"));
+				        .setData(Uri.parse("market://details?id=ch.ethz." + id));
 				    startActivity(install);
 				}
 			}
