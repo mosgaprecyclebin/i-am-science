@@ -3,6 +3,8 @@
 
     <string name="app_name">I am Science</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_apps">Apps:</string>
+    <string name="title_score">Score:</string>
+    <string name="score">123</string>
 
 </resources>
