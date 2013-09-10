@@ -16,6 +16,16 @@ Longer term:
 - Reputation
 - Impact
 
+
+Screenshot
+----------
+
+This is a screenshot of the current app (very preliminary and work in
+progress):
+
+![Screenshot](screenshot.png)
+
+
 License
 -------
 
