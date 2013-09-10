@@ -3,7 +3,9 @@ package ch.ethz.iamscience;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,7 +47,10 @@ public class MainActivity extends Activity {
 	}
 
 	public int getScore() {
-		return getPreferences(Context.MODE_PRIVATE).getInt("score", 0);
+		SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+		int score = prefs.getInt("score", 0);
+		Log.i("i-am-science", "Score: " + score);
+		return score;
 	}
 
 }
