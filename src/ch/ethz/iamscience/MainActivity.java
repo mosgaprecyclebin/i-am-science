@@ -22,8 +22,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-	    TextView scoreText = (TextView) findViewById(R.id.score);
-	    scoreText.setText(getScore() + "");
 		apps = new ArrayAdapter<String>(this, R.layout.app_element);
         ListView appListView = (ListView) findViewById(R.id.apps);
         appListView.setAdapter(apps);
@@ -37,6 +35,19 @@ public class MainActivity extends Activity {
 			}
         	
         });
+        
+        refreshGui();
+	}
+
+	private void refreshGui() {
+	    TextView scoreText = (TextView) findViewById(R.id.score);
+	    scoreText.setText(getScore() + "");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+        refreshGui();
 	}
 
 	@Override
