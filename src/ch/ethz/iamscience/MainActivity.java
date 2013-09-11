@@ -1,5 +1,8 @@
 package ch.ethz.iamscience;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,44 +15,46 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private static final String[] levels = {"Student", "Master", "Doctor",
-		"Professor", "Nobel Laureate"};
+	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
-	private static final String[] appIds = {"nervous", "showmeyourworld"};
+	private static final List<ScienceApp> apps = new ArrayList<ScienceApp>();
 
-    private ArrayAdapter<String> apps;
+	static {
+		apps.add(new ScienceApp("ch.ethz.nervous", "nervous", R.drawable.nervous));
+		apps.add(new ScienceApp("ch.ethz.showmeyourworld", "Show me your world", R.drawable.showmeyourworld));
+	}
+
+    private ScienceAppAdapter appAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		apps = new ArrayAdapter<String>(this, R.layout.app_element);
+
+		appAdapter = new ScienceAppAdapter(this);
+        appAdapter.addAllApps(apps);
         ListView appListView = (ListView) findViewById(R.id.apps);
-        appListView.setAdapter(apps);
-        for (String id : appIds) {
-            apps.add(id);
-        }
+        appListView.setAdapter(appAdapter);
         appListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
-				String id = ((TextView) v).getText().toString();
-				if (isAppInstalled("ch.ethz." + id)) {
-				    Intent launch = getPackageManager().getLaunchIntentForPackage("ch.ethz." + id);
+			public void onItemClick(AdapterView<?> av, View v, int position, long id) {
+				String appId = appAdapter.getItem(position).getId();
+				if (isAppInstalled(appId)) {
+				    Intent launch = getPackageManager().getLaunchIntentForPackage(appId);
 	                startActivity(launch);
 				} else {
 					Intent install = new Intent(Intent.ACTION_VIEW)
-				        .setData(Uri.parse("market://details?id=ch.ethz." + id));
+				        .setData(Uri.parse("market://details?id=" + appId));
 				    startActivity(install);
 				}
 			}
-        	
+
         });
         
         refreshGui();

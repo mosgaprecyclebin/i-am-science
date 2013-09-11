@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="18sp"
-    android:drawableLeft="@drawable/nervous"
+    android:drawableLeft="@drawable/ic_launcher"
+    android:drawablePadding="5dp"
     android:padding="5dp"
 />
