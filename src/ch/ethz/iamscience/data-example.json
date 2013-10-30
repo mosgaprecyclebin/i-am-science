@@ -1,3 +1,15 @@
 {
-  "score": 104
+  "score": 104,
+  "apps": [
+    {
+      "id": "ch.ethz.nervous",
+      "name": "nervous",
+      "icon": "nervous"
+    },
+    {
+      "id": "ch.ethz.showmeyourworld",
+      "name": "Show me your world",
+      "icon": "showmeyourworld"
+    }
+  ]
 }

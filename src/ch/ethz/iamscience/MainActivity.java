@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,16 +35,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	// dummy JSON file (to be replaced by web service call):
-	private static String serverURL = "https://raw.github.com/mosgap/i-am-science/master/src/ch/ethz/iamscience/example.json";
+	private static String serverURL = "https://raw.github.com/mosgap/i-am-science/master/src/ch/ethz/iamscience/data-example.json";
 
 	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
 	private static final List<ScienceApp> apps = new ArrayList<ScienceApp>();
-
-	static {
-		apps.add(new ScienceApp("ch.ethz.nervous", "nervous", R.drawable.nervous));
-		apps.add(new ScienceApp("ch.ethz.showmeyourworld", "Show me your world", R.drawable.showmeyourworld));
-	}
 
     private ScienceAppAdapter appAdapter;
     private String userId;
@@ -183,6 +179,15 @@ public class MainActivity extends Activity {
 	            	}
 	            }
 	            data = new JSONObject(jsonData);
+	            JSONArray appList = data.getJSONArray("apps");
+	            for (int i = 0; i < appList.length(); i++) {
+	            	JSONObject a = appList.getJSONObject(i);
+	            	int icon = R.drawable.nervous;
+	            	if (a.has("icon")) {
+	            		icon = getResources().getIdentifier(a.getString("icon"), "drawable", getPackageName());
+	            	}
+	            	apps.add(new ScienceApp(a.getString("id"), a.getString("name"), icon));
+	            }
 	            Log.i("i-am-science", "Data: " + data.toString());
 	            return true;
 	        } catch (IOException ex) {
