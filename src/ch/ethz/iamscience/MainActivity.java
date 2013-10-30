@@ -34,7 +34,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	// dummy JSON file (to be replaced by web service call):
-	private static String serverURL = "https://raw.github.com/flori/json/master/data/example.json";
+	private static String serverURL = "https://raw.github.com/mosgap/i-am-science/master/src/ch/ethz/iamscience/example.json";
 
 	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
@@ -143,14 +143,10 @@ public class MainActivity extends Activity {
 
 	public int getScore() {
 		try {
-			return data.getInt("COUNT");
+			return data.getInt("score");
 		} catch (Exception ex) {
 			return -1;
 		}
-//		SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-//		int score = prefs.getInt("score", 0);
-//		Log.i("i-am-science", "Score: " + score);
-//		return score;
 	}
 
 	private boolean isAppInstalled(String id) {
