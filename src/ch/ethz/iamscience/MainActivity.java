@@ -1,7 +1,14 @@
 package ch.ethz.iamscience;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -30,6 +38,7 @@ public class MainActivity extends Activity {
 	}
 
     private ScienceAppAdapter appAdapter;
+    private String userId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,28 @@ public class MainActivity extends Activity {
         
         refreshGui();
 	}
+
+    @Override
+    protected void onStart() {
+    	super.onStart();
+        try {
+        	File dir = new File(Environment.getExternalStorageDirectory(), "i-am-science");
+        	dir.mkdir();
+        	File file = new File(dir, "userid");
+        	if (file.exists()) {
+        		BufferedReader r = new BufferedReader(new FileReader(file));
+        		userId = r.readLine();
+        		r.close();
+        	} else {
+        		userId = Math.abs(new Random().nextLong()) + "";
+        		BufferedWriter w = new BufferedWriter(new FileWriter(file));
+        		w.write(userId + "\n");
+        		w.close();
+        	}
+        } catch (IOException ex) {
+        	ex.printStackTrace();
+        }
+    }
 
 	private void refreshGui() {
 		int score = getScore();
