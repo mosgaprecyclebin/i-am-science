@@ -70,7 +70,6 @@ public class MainActivity extends Activity {
         }
 
 		appAdapter = new ScienceAppAdapter(this);
-        appAdapter.addAllApps(apps);
         ListView appListView = (ListView) findViewById(R.id.apps);
         appListView.setAdapter(appAdapter);
         appListView.setOnItemClickListener(new OnItemClickListener() {
@@ -179,6 +178,7 @@ public class MainActivity extends Activity {
 	            	}
 	            }
 	            data = new JSONObject(jsonData);
+	            Log.i("i-am-science", "Data: " + data.toString());
 	            JSONArray appList = data.getJSONArray("apps");
 	            for (int i = 0; i < appList.length(); i++) {
 	            	JSONObject a = appList.getJSONObject(i);
@@ -188,7 +188,6 @@ public class MainActivity extends Activity {
 	            	}
 	            	apps.add(new ScienceApp(a.getString("id"), a.getString("name"), icon));
 	            }
-	            Log.i("i-am-science", "Data: " + data.toString());
 	            return true;
 	        } catch (IOException ex) {
 	        	ex.printStackTrace();
@@ -201,6 +200,7 @@ public class MainActivity extends Activity {
 	    @Override
 	    protected void onPostExecute(Boolean result) {
 	    	super.onPostExecute(result);
+            appAdapter.addAllApps(apps);
 	    	refreshGui();
 	    }
 

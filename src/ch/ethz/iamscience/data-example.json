@@ -10,6 +10,10 @@
       "id": "ch.ethz.showmeyourworld",
       "name": "Show me your world",
       "icon": "showmeyourworld"
+    },
+    {
+      "id": "ch.ethz.dummy",
+      "name": "Dummy entry"
     }
   ]
 }

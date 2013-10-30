@@ -26,6 +26,7 @@ public class ScienceAppAdapter extends BaseAdapter {
 
 	public void addAllApps(Collection<ScienceApp> newApps) {
 		apps.addAll(newApps);
+		notifyDataSetChanged();
 	}
 
 	@Override
