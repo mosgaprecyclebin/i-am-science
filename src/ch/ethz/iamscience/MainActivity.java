@@ -32,7 +32,8 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private static String serverURL = "http://streaming.coenosense.com:8092/get_i_am_science_data?uid=";
+//	private static String serverURL = "http://streaming.coenosense.com:8092/get_i_am_science_data?uid=";
+	private static String serverURL = "https://raw.github.com/mosgap/i-am-science/master/src/ch/ethz/iamscience/data-example.json?uid=";
 
 	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
@@ -145,7 +146,6 @@ public class MainActivity extends Activity {
 	}
 
 	public int getScore() {
-    	Log.i("SCORE", "get score");
 		try {
             JSONArray appList = data.getJSONArray("apps");
             int score = 0;
@@ -170,9 +170,9 @@ public class MainActivity extends Activity {
         return installed;
     }
 
-	private class GetDataTask extends AsyncTask<Object,Integer,Boolean> {
+	private class GetDataTask extends AsyncTask<Object,Void,Void> {
 
-	    protected Boolean doInBackground(Object... objs) {
+	    protected Void doInBackground(Object... objs) {
 	        try {
 	            URL url = new URL(serverURL + userId);
 	            URLConnection urlConnection = url.openConnection();
@@ -194,17 +194,16 @@ public class MainActivity extends Activity {
 	            }
 	            data = new JSONObject(jsonData);
 	            Log.i("i-am-science", "Data: " + data.toString());
-	            return true;
 	        } catch (IOException ex) {
 	        	ex.printStackTrace();
 	        } catch (JSONException ex) {
 	        	ex.printStackTrace();
 	        }
-	        return false;
+	        return null;
 	    }
 
 	    @Override
-	    protected void onPostExecute(Boolean result) {
+	    protected void onPostExecute(Void result) {
 	    	super.onPostExecute(result);
 	    	refreshGui();
 	    }
