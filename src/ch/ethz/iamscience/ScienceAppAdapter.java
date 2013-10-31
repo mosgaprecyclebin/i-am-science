@@ -1,8 +1,11 @@
 package ch.ethz.iamscience;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,20 +16,26 @@ import android.widget.TextView;
 
 public class ScienceAppAdapter extends BaseAdapter {
 
-	private List<ScienceApp> apps = new ArrayList<ScienceApp>();
+	private List<JSONObject> apps = new ArrayList<JSONObject>();
 	private LayoutInflater inflater;
 
 	public ScienceAppAdapter(Context context) {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public void addApp(ScienceApp app) {
+	public void addApp(JSONObject app) {
 		apps.add(app);
 	}
 
-	public void setApps(Collection<ScienceApp> newApps) {
+	public void setApps(JSONArray appArray) {
 		apps.clear();
-		apps.addAll(newApps);
+        for (int i = 0; i < appArray.length(); i++) {
+    		try {
+    			apps.add(appArray.getJSONObject(i));
+    		} catch (JSONException ex) {
+    			ex.printStackTrace();
+    		}
+        }
 		notifyDataSetChanged();
 	}
 
@@ -36,7 +45,7 @@ public class ScienceAppAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public ScienceApp getItem(int position) {
+	public JSONObject getItem(int position) {
 		return apps.get(position);
 	}
 
@@ -47,10 +56,20 @@ public class ScienceAppAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ScienceApp app = apps.get(position);
+		JSONObject app = apps.get(position);
 		TextView v = (TextView) inflater.inflate(R.layout.app_element, parent, false);
-		v.setText(app.getName());
-		v.setCompoundDrawablesWithIntrinsicBounds(app.getDrawable(), 0, 0, 0);
+		String name = "...";
+		try {
+			if (app.has("name")) {
+				name = app.getString("name");
+			} else {
+				name = app.getString("id");
+			}
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+		}
+		v.setText(name);
+		v.setCompoundDrawablesWithIntrinsicBounds(R.drawable.nervous, 0, 0, 0);
 		return v;
 	}
 

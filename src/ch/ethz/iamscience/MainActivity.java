@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.json.JSONArray;
@@ -38,7 +36,6 @@ public class MainActivity extends Activity {
 
 	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
-	private static final List<ScienceApp> apps = new ArrayList<ScienceApp>();
 
     private ScienceAppAdapter appAdapter;
     private String userId;
@@ -75,14 +72,18 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position, long id) {
-				String appId = appAdapter.getItem(position).getId();
-				if (isAppInstalled(appId)) {
-				    Intent launch = getPackageManager().getLaunchIntentForPackage(appId);
-	                startActivity(launch);
-				} else {
-					Intent install = new Intent(Intent.ACTION_VIEW)
-				        .setData(Uri.parse("market://details?id=" + appId));
-				    startActivity(install);
+				try {
+					String appId = appAdapter.getItem(position).getString("id");
+					if (isAppInstalled(appId)) {
+					    Intent launch = getPackageManager().getLaunchIntentForPackage(appId);
+		                startActivity(launch);
+					} else {
+						Intent install = new Intent(Intent.ACTION_VIEW)
+					        .setData(Uri.parse("market://details?id=" + appId));
+					    startActivity(install);
+					}
+				} catch (JSONException ex) {
+					ex.printStackTrace();
 				}
 			}
 
@@ -119,6 +120,14 @@ public class MainActivity extends Activity {
 	    if (nextLevel != null) {
 		    TextView nextLevelText = (TextView) findViewById(R.id.nextlevel);
 		    nextLevelText.setText("(" + r + " more points to get to level '" + nextLevel + "')");
+	    }
+
+	    if (data != null) {
+		    try {
+		    	appAdapter.setApps(data.getJSONArray("apps"));
+		    } catch (JSONException ex) {
+		    	ex.printStackTrace();
+		    }
 	    }
 	}
 
@@ -185,18 +194,6 @@ public class MainActivity extends Activity {
 	            }
 	            data = new JSONObject(jsonData);
 	            Log.i("i-am-science", "Data: " + data.toString());
-	            JSONArray appList = data.getJSONArray("apps");
-            	apps.clear();
-	            for (int i = 0; i < appList.length(); i++) {
-	            	JSONObject a = appList.getJSONObject(i);
-	            	int icon = R.drawable.nervous;
-	            	if (a.has("icon")) {
-	            		icon = getResources().getIdentifier(a.getString("icon"), "drawable", getPackageName());
-	            	}
-	            	String name = a.getString("id");
-	            	if (a.has("name")) name = a.getString("name");
-	            	apps.add(new ScienceApp(a.getString("id"), name, icon));
-	            }
 	            return true;
 	        } catch (IOException ex) {
 	        	ex.printStackTrace();
@@ -209,7 +206,6 @@ public class MainActivity extends Activity {
 	    @Override
 	    protected void onPostExecute(Boolean result) {
 	    	super.onPostExecute(result);
-            appAdapter.setApps(apps);
 	    	refreshGui();
 	    }
 
