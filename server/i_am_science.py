@@ -30,7 +30,7 @@ class StatisticsHandler(tornado.web.RequestHandler):
 	
         uid = self.get_argument('uid')
 	appid = self.get_argument('appid') # 0 und 100
-        score = self.get_argument('score')
+        score = int(self.get_argument('score'))
  #      appspecific_data = tornado.escape.json_decode(self.request.body) # score, more_data
         t_upload = time.time()
         # update stats
@@ -56,7 +56,7 @@ class GetIamScienceDataHandler(tornado.web.RequestHandler):
 		if a['id'] in statsByAppId.keys():
 			us = statsByAppId[a['id']]
 			print "HIIIT"
-			res['apps'].append({'id': a['id'],'logo':a['logo'],'installed':True,'score':us['score'],'lastupdate:':us['lastupdate']})
+			res['apps'].append({'id': a['id'],'logo':a['logo'],'installed':True,'score':int(us['score']),'lastupdate:':us['lastupdate']})
 		else:
 			res['apps'].append({'id': a['id'],'logo':a['logo'],'installed':False, 'score':0})
 
