@@ -67,16 +67,21 @@ public class ScienceAppAdapter extends BaseAdapter {
 		JSONObject app = apps.get(position);
 		TextView view = (TextView) inflater.inflate(R.layout.app_element, parent, false);
 		String name = "...";
+		String score = "";
 		try {
 			if (app.has("name")) {
 				name = app.getString("name");
 			} else {
 				name = app.getString("id");
 			}
+			int sc = app.getInt("score");
+			if (sc > 0) {
+				score = "\n(score: " + sc + ")";
+			}
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
-		view.setText(name);
+		view.setText(name + score);
 		view.setCompoundDrawablesWithIntrinsicBounds(R.drawable.app, 0, 0, 0);
 		try {
 			GetLogoTask getLogoTask = new GetLogoTask();

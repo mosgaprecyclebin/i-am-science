@@ -56,7 +56,6 @@ public class MainActivity extends Activity {
         		userId = r.readLine();
         		r.close();
         	} else {
-        		Log.i("FOO", file.toString());
         		userId = Math.abs(new Random().nextLong()) + "";
         		BufferedWriter w = new BufferedWriter(new FileWriter(file));
         		w.write(userId + "\n");
