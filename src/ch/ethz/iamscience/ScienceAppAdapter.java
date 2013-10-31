@@ -24,7 +24,8 @@ public class ScienceAppAdapter extends BaseAdapter {
 		apps.add(app);
 	}
 
-	public void addAllApps(Collection<ScienceApp> newApps) {
+	public void setApps(Collection<ScienceApp> newApps) {
+		apps.clear();
 		apps.addAll(newApps);
 		notifyDataSetChanged();
 	}

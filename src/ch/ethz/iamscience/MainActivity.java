@@ -34,8 +34,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	// dummy JSON file (to be replaced by web service call):
-	private static String serverURL = "https://raw.github.com/mosgap/i-am-science/master/src/ch/ethz/iamscience/data-example.json";
+	private static String serverURL = "http://streaming.coenosense.com:8092/get_i_am_science_data?uid=";
 
 	private static final String[] levels = {"Student", "Master", "Doctor", "Professor", "Nobel Laureate"};
 	private static final Integer[] levelScores = {10, 50, 250, 1000};
@@ -137,8 +136,15 @@ public class MainActivity extends Activity {
 	}
 
 	public int getScore() {
+    	Log.i("SCORE", "get score");
 		try {
-			return data.getInt("score");
+            JSONArray appList = data.getJSONArray("apps");
+            int score = 0;
+            for (int i = 0; i < appList.length(); i++) {
+            	JSONObject a = appList.getJSONObject(i);
+            	score += a.getInt("score");
+            }
+            return score;
 		} catch (Exception ex) {
 			return -1;
 		}
@@ -159,7 +165,7 @@ public class MainActivity extends Activity {
 
 	    protected Boolean doInBackground(Object... objs) {
 	        try {
-	            URL url = new URL(serverURL);
+	            URL url = new URL(serverURL + userId);
 	            URLConnection urlConnection = url.openConnection();
 	            BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 	            String jsonData = "";
@@ -180,13 +186,16 @@ public class MainActivity extends Activity {
 	            data = new JSONObject(jsonData);
 	            Log.i("i-am-science", "Data: " + data.toString());
 	            JSONArray appList = data.getJSONArray("apps");
+            	apps.clear();
 	            for (int i = 0; i < appList.length(); i++) {
 	            	JSONObject a = appList.getJSONObject(i);
 	            	int icon = R.drawable.nervous;
 	            	if (a.has("icon")) {
 	            		icon = getResources().getIdentifier(a.getString("icon"), "drawable", getPackageName());
 	            	}
-	            	apps.add(new ScienceApp(a.getString("id"), a.getString("name"), icon));
+	            	String name = a.getString("id");
+	            	if (a.has("name")) name = a.getString("name");
+	            	apps.add(new ScienceApp(a.getString("id"), name, icon));
 	            }
 	            return true;
 	        } catch (IOException ex) {
@@ -200,7 +209,7 @@ public class MainActivity extends Activity {
 	    @Override
 	    protected void onPostExecute(Boolean result) {
 	    	super.onPostExecute(result);
-            appAdapter.addAllApps(apps);
+            appAdapter.setApps(apps);
 	    	refreshGui();
 	    }
 

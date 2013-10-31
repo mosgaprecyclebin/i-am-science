@@ -1,19 +1,16 @@
 {
-  "score": 104,
   "apps": [
     {
       "id": "ch.ethz.nervous",
       "name": "nervous",
-      "icon": "nervous"
+      "score": 35,
+      "logo": "http://coenosense.com/iamscience/ch.ethz.nervous.png"
     },
     {
       "id": "ch.ethz.showmeyourworld",
       "name": "Show me your world",
-      "icon": "showmeyourworld"
-    },
-    {
-      "id": "ch.ethz.dummy",
-      "name": "Dummy entry"
+      "score": 99,
+      "logo": "http://coenosense.com/iamscience/ch.ethz.showmeyourworld.png"
     }
   ]
 }
