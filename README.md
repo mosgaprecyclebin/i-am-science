@@ -3,18 +3,18 @@ I am Science
 
 Central app for science apps.
 
-Planned features, short term:
+Features:
 
-- List of science apps (click to install)
+- List of science apps (click to run/install)
 - Scores for activities within I am Science apps
 - "Career" levels: Master, Professor, Nobel Prizes
 
-Longer term:
+Todo:
 
-- Access to (aggregated) data for users at a certain level
-- Users can publish small results on data
-- Reputation
-- Impact
+- Highscores
+- Push notifications
+- Secure update of scores
+- Light-weight apps (e.g. just URL to survey)
 
 
 Screenshot
